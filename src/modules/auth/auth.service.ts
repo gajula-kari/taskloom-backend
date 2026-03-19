@@ -40,3 +40,35 @@ export const register = async (
     token,
   };
 };
+
+export const login = async (email: string, password: string) => {
+  const user = await User.findOne({ email }).select("+passwordHash");
+
+  if (!user) {
+    throw new AppError("Invalid credentials", 400);
+  }
+
+  const isPasswordMatch = await bcrypt.compare(password, user.passwordHash);
+
+  if (!isPasswordMatch) {
+    throw new AppError("Invalid credentials", 400);
+  }
+
+  const token = jwt.sign(
+    {
+      userId: user._id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET!,
+    { expiresIn: "7d" },
+  );
+
+  return {
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+    token,
+  };
+};
