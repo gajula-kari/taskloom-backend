@@ -9,10 +9,6 @@ export const requireAuth = (
 ) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log("---------------------------------------------------");
-
-    console.log(authHeader);
-    console.log("---------------------------------------------------");
 
     if (!authHeader) throw new AppError("Unauthorized", 401);
 
@@ -29,7 +25,6 @@ export const requireAuth = (
 
     next();
   } catch (error) {
-    console.log(error);
     next(new AppError("Unauthorized", 401));
   }
 };
