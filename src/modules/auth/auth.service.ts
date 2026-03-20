@@ -2,7 +2,6 @@ import { User } from "../../models/user";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { AppError } from "../../utils/appError";
-import mongoose from "mongoose";
 
 export const register = async (
   name: string,
@@ -74,9 +73,9 @@ export const login = async (email: string, password: string) => {
   };
 };
 
-export const getUser = async (id: string, email: string) => {
+export const getUser = async (id: string) => {
   // const user = await User.findById(id);
-  const user = await User.findOne({ _id: id, email });
+  const user = await User.findOne({ _id: id });
 
   if (!user) {
     throw new AppError("User not found", 400);

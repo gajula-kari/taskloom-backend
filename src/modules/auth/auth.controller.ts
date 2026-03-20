@@ -66,11 +66,11 @@ export const getUserController = async (
     const user = req.user;
 
     // basic validation
-    if (!user || !user.email || !user.userId) {
+    if (!user || !user.userId) {
       throw new AppError("All fields are required", 400);
     }
 
-    const result = await getUser(user.userId, user.email);
+    const result = await getUser(user.userId);
 
     res.status(200).json({
       success: true,
